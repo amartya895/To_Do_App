@@ -16,6 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final todosList = ToDo.todoList();
   final _todocontroller = TextEditingController();
 
+  bool _switchValue = false;
+
   List<ToDo> _foundTodo = [];
 
   @override
@@ -27,16 +29,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: styles.tdBgColor,
+      backgroundColor: _switchValue ? styles.tdBlack : styles.tdBgColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: styles.tdBgColor,
+        backgroundColor: _switchValue ? styles.tdBlack : styles.tdBgColor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(
               Icons.menu,
-              color: styles.tdBlack,
+              color: _switchValue ? Colors.white : styles.tdBlack,
               size: 30,
             ),
             Container(
@@ -64,15 +66,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListView(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 50, bottom: 20),
-                      child: Text(
-                        "All ToDos",
-                        style: TextStyle(
-                            color: styles.tdBlack,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
+                        margin: EdgeInsets.only(top: 50, bottom: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "All ToDos",
+                              style: TextStyle(
+                                  color: _switchValue
+                                      ? Colors.white
+                                      : styles.tdBlack,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.light_mode_outlined),
+                                Switch(
+                                  value: _switchValue,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _switchValue = newValue;
+                                    });
+                                  },
+                                ),
+                                Icon(Icons.dark_mode_outlined)
+                              ],
+                            )
+                          ],
+                        )),
                     for (ToDo todoo in _foundTodo)
                       TodoItem(
                         todo: todoo,
@@ -92,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: _switchValue ? styles.tdGrey : Colors.white,
                     boxShadow: [
                       BoxShadow(
                           color: Colors.grey,
@@ -137,7 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: Colors.white),
+          borderRadius: BorderRadius.circular(20),
+          color: _switchValue ? styles.tdGrey : Colors.white),
       child: TextField(
         onChanged: (value) => _runfilter(value),
         decoration: InputDecoration(
@@ -145,11 +168,12 @@ class _HomeScreenState extends State<HomeScreen> {
             border: InputBorder.none,
             prefixIcon: Icon(
               Icons.search,
-              color: styles.tdBlack,
+              color: _switchValue ? Colors.white : styles.tdGrey,
               size: 20,
             ),
             hintText: "Search",
-            hintStyle: TextStyle(color: styles.tdGrey),
+            hintStyle:
+                TextStyle(color: _switchValue ? Colors.white : styles.tdGrey),
             prefixIconConstraints: BoxConstraints(minWidth: 25, maxHeight: 20)),
       ),
     );

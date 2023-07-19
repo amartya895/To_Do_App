@@ -3,8 +3,12 @@ import 'package:to_do_app/app_styles.dart/app_color.dart';
 import 'package:to_do_app/models/todo.dart';
 
 class TodoItem extends StatelessWidget {
-  const TodoItem(
-      {super.key, required this.todo, this.onTodoChange, this.onDeleteItem});
+  const TodoItem({
+    super.key,
+    required this.todo,
+    this.onTodoChange,
+    this.onDeleteItem,
+  });
 
   final ToDo todo;
   final onTodoChange;
